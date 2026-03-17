@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>মদের মণি, মন্দারমণি 🍺</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bangers&family=Hind+Siliguri:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --y: #f5e642;
+      --o: #ff6b00;
+      --p: #ff2d78;
+      --g: #39ff14;
+      --b: #00e5ff;
+      --dark: #080808;
+      --glass: rgba(255,255,255,0.04);
+      --gb: rgba(255,255,255,0.08);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    #cur {
+      width:22px; height:22px;
+      border:2.5px solid var(--y);
+      border-radius:50%;
+      position:fixed; pointer-events:none;
+      z-index:9999; top:0; left:0;
+      transform:translate(-50%,-50%);
+      transition:transform .08s, background .15s;
+      mix-blend-mode: difference;
+    }
+    #cur.on { background:var(--y); transform:translate(-50%,-50%) scale(2); }
+
+    /* GRAIN OVERLAY */
+    body::before {
+      content:'';
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:1000; opacity:.4;
+    }
+
+    /* TICKER */
+    .ticker-wrap { background:var(--p); overflow:hidden; white-space:nowrap; padding:.45rem 0; position:relative; z-index:50; }
+    .ticker-inner {
+      display:inline-block;
+      animation:tick 28s linear infinite;
+      font-family:'Permanent Marker',cursive;
+      font-size:.95rem; color:#fff;
+      text-shadow:2px 2px 0 rgba(0,0,0,.3);
+    }
+    @keyframes tick { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
+
+    /* SCANLINES */
+    .scan {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.12) 3px,rgba(0,0,0,.12) 4px);
+      pointer-events:none; z-index:2;
+    }
+
+    /* HERO */
+    #hero {
+      min-height:100vh;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      position:relative; overflow:hidden; padding:2rem; text-align:center;
+    }
+    #hero::after {
+      content:'';
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255,107,0,.22) 0%,transparent 65%),
+        radial-gradient(ellipse 60% 50% at 90% 100%, rgba(255,45,120,.18) 0%,transparent 55%),
+        radial-gradient(ellipse 55% 55% at 10% 90%, rgba(57,255,20,.09) 0%,transparent 50%),
+        radial-gradient(ellipse 40% 40% at 70% 40%, rgba(0,229,255,.07) 0%,transparent 50%);
+      pointer-events:none;
+    }
+
+    .hero-content { position:relative; z-index:3; }
+
+    .stamp {
+      display:inline-block;
+      border:4px solid var(--o);
+      color:var(--o);
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.1rem;
+      letter-spacing:.2em;
+      padding:.3rem 1.4rem;
+      transform:rotate(-3deg);
+      margin-bottom:1.8rem;
+      position:relative;
+      animation:stampPop .6s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .stamp::before {
+      content:'';
+      position:absolute; inset:-2px;
+      border:2px dashed var(--o); opacity:.4;
+    }
+    @keyframes stampPop { 0%{transform:rotate(-3deg) scale(0)} 100%{transform:rotate(-3deg) scale(1)} }
+
+    h1.t1 {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(3.5rem,13vw,10rem);
+      line-height:.88; letter-spacing:.03em;
+      color:var(--y);
+      text-shadow:
+        0 0 25px rgba(245,230,66,.7),
+        0 0 70px rgba(245,230,66,.3),
+        5px 5px 0 var(--o),
+        10px 10px 0 rgba(255,107,0,.4),
+        15px 15px 0 rgba(255,107,0,.15);
+      animation:flicker 9s ease-in-out infinite;
+    }
+    h1.t2 {
+      font-family:'Bangers',cursive;
+      font-size:clamp(3rem,12vw,9rem);
+      line-height:.85; letter-spacing:.05em;
+      color:var(--p);
+      text-shadow:
+        0 0 20px rgba(255,45,120,.8),
+        0 0 60px rgba(255,45,120,.4),
+        -5px 5px 0 var(--b),
+        -10px 10px 0 rgba(0,229,255,.3);
+      animation:flicker2 7s ease-in-out infinite;
+    }
+    @keyframes flicker { 0%,88%,90%,100%{opacity:1} 89%{opacity:.7} }
+    @keyframes flicker2 { 0%,92%,94%,100%{opacity:1} 93%{opacity:.6} }
+
+    /* Bengali titles */
+    .bengali-title {
+      font-family:'Hind Siliguri', sans-serif;
+      font-weight:700;
+      font-size:clamp(3rem,11vw,9rem);
+      line-height:.95; letter-spacing:.01em;
+      color:var(--y);
+      text-shadow:
+        0 0 25px rgba(245,230,66,.7),
+        0 0 70px rgba(245,230,66,.3),
+        4px 4px 0 var(--o),
+        8px 8px 0 rgba(255,107,0,.35);
+      animation:flicker 9s ease-in-out infinite;
+    }
+    .bengali-title2 {
+      font-family:'Hind Siliguri', sans-serif;
+      font-weight:700;
+      font-size:clamp(3rem,12vw,10rem);
+      line-height:.9; letter-spacing:.01em;
+      color:var(--p);
+      text-shadow:
+        0 0 20px rgba(255,45,120,.8),
+        0 0 60px rgba(255,45,120,.4),
+        -4px 4px 0 var(--b),
+        -8px 8px 0 rgba(0,229,255,.3);
+      animation:flicker2 7s ease-in-out infinite;
+    }
+
+    .tagline {
+      font-family:'Hind Siliguri','Permanent Marker',cursive;
+      font-size:clamp(.9rem,2.5vw,1.6rem);
+      color:rgba(255,255,255,.6);
+      margin-top:.8rem;
+      animation:sway 5s ease-in-out infinite;
+    }
+    @keyframes sway { 0%,100%{transform:rotate(-1.5deg)} 50%{transform:rotate(1.5deg)} }
+
+    .hero-icons {
+      display:flex; gap:1.2rem; justify-content:center; margin-top:2rem; flex-wrap:wrap;
+      animation:floatY 3.5s ease-in-out infinite;
+    }
+    .hero-icons span { font-size:2.2rem; }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    .scroll-hint {
+      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+      font-size:.6rem; letter-spacing:.3em; color:rgba(255,255,255,.25);
+      text-transform:uppercase; animation:bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* SECTIONS */
+    section { padding:5rem 2rem; position:relative; }
+    .sec-label {
+      font-family:'Permanent Marker',cursive;
+      font-size:.95rem; letter-spacing:.25em; text-transform:uppercase; margin-bottom:.8rem;
+    }
+    .sec-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2rem,6vw,4.5rem);
+      line-height:1; color:#fff; opacity:.9;
+    }
+    .section-header { text-align:center; margin-bottom:3rem; }
+
+    .divider {
+      height:2px;
+      background:linear-gradient(90deg,transparent,var(--o),var(--p),var(--y),transparent);
+      opacity:.35;
+    }
+
+    /* COUNTDOWN */
+    #countdown { text-align:center; }
+
+    .clock-grid {
+      display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap;
+    }
+    .unit { display:flex; flex-direction:column; align-items:center; }
+    .flip-box {
+      width:clamp(72px,14vw,115px);
+      height:clamp(85px,16vw,135px);
+      perspective:600px;
+    }
+    .flip-num {
+      width:100%; height:100%;
+      background:linear-gradient(160deg,rgba(255,255,255,.07) 0%,rgba(0,0,0,.3) 100%);
+      border:1px solid var(--gb);
+      border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.6rem,7vw,5.2rem);
+      position:relative; overflow:hidden;
+      box-shadow:0 8px 30px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .flip-num::after {
+      content:'';
+      position:absolute; left:0; right:0; top:50%;
+      height:1px; background:rgba(0,0,0,.6);
+    }
+    .flip-num.go { animation:flip .55s cubic-bezier(.4,0,.6,1); }
+    @keyframes flip {
+      0%  {transform:rotateX(0deg); filter:brightness(1);}
+      49% {transform:rotateX(-90deg); filter:brightness(.4);}
+      50% {transform:rotateX(90deg); filter:brightness(.4);}
+      100%{transform:rotateX(0deg); filter:brightness(1);}
+    }
+    #days  {color:var(--y); text-shadow:0 0 15px rgba(245,230,66,.8);}
+    #hours {color:var(--o); text-shadow:0 0 15px rgba(255,107,0,.8);}
+    #mins  {color:var(--p); text-shadow:0 0 15px rgba(255,45,120,.8);}
+    #secs  {color:var(--g); text-shadow:0 0 15px rgba(57,255,20,.8);}
+
+    .unit-lbl {
+      font-size:.6rem; letter-spacing:.25em; color:rgba(255,255,255,.35);
+      margin-top:.5rem; text-transform:uppercase;
+    }
+    .colon {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.5rem,7vw,5rem);
+      color:rgba(255,255,255,.18);
+      margin-bottom:1.6rem;
+      animation:blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.08} }
+
+    .caption-box {
+      margin-top:2.5rem;
+      display:inline-block;
+      border:1px solid var(--gb);
+      border-radius:8px;
+      padding:.8rem 2rem;
+      font-family:'Permanent Marker',cursive;
+      font-size:1.1rem;
+      color:rgba(255,255,255,.55);
+      background:var(--glass);
+      animation:sway 4s ease-in-out infinite;
+    }
+
+    /* GALLERY */
+    #gallery { background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(255,107,0,.06) 0%,transparent 70%); }
+
+    /* BEER HERO */
+    .beer-hero {
+      position:relative;
+      width:clamp(160px,35vw,280px);
+      border-radius:16px; overflow:hidden;
+      border:2px solid var(--o);
+      box-shadow:0 0 40px rgba(255,107,0,.5), 0 0 80px rgba(255,107,0,.2);
+      transition:transform .3s, box-shadow .3s;
+    }
+    .beer-hero:hover {
+      transform:scale(1.04) rotate(-1deg);
+      box-shadow:0 0 60px rgba(255,107,0,.8), 0 0 120px rgba(255,107,0,.3);
+    }
+    .beer-img { width:100%; display:block; filter:saturate(1.4); }
+    .beer-label {
+      position:absolute; bottom:0; left:0; right:0;
+      background:linear-gradient(transparent,rgba(0,0,0,.85));
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.6rem; letter-spacing:.15em;
+      color:var(--y); text-align:center;
+      padding:.8rem .5rem .5rem;
+      text-shadow:0 0 12px rgba(245,230,66,.8);
+    }
+
+    /* GIF GRID */
+    .gif-grid {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:1.4rem;
+      max-width:1050px; margin:0 auto;
+    }
+    .gif-card {
+      width:240px; flex:0 0 240px;
+      border-radius:14px; overflow:hidden;
+      border:1px solid var(--gb);
+      background:var(--glass);
+      transition:transform .3s, box-shadow .3s;
+      position:relative;
+    }
+    .gif-card:nth-child(odd)  { transform:rotate(.6deg); }
+    .gif-card:nth-child(even) { transform:rotate(-.6deg); }
+    .gif-card:hover {
+      transform:rotate(0deg) translateY(-8px) scale(1.03) !important;
+      box-shadow:0 20px 50px rgba(255,45,120,.3);
+      border-color:var(--p);
+    }
+    .gif-card img {
+      width:100%; aspect-ratio:4/3; object-fit:cover; display:block;
+      filter:saturate(1.2);
+    }
+    .gif-cap {
+      padding:.6rem .8rem;
+      font-family:'Permanent Marker',cursive;
+      font-size:.85rem; color:rgba(255,255,255,.6);
+      text-align:center; letter-spacing:.03em;
+      background:rgba(0,0,0,.3);
+    }
+
+    /* OLD gallery-grid kept for compat but unused */
+
+    /* HOTEL */
+    #hotel { text-align:center; }
+
+    .hotel-wrap {
+      max-width:680px; margin:0 auto;
+      border:1px solid var(--gb);
+      border-radius:18px; overflow:hidden;
+      background:var(--glass); position:relative;
+    }
+    .hotel-wrap::before {
+      content:'🏨 OUR CRIME SCENE';
+      position:absolute; top:0; right:1.5rem;
+      background:var(--p); color:#fff;
+      font-family:'Permanent Marker',cursive;
+      font-size:.8rem; padding:.35rem .9rem;
+      border-radius:0 0 10px 10px; z-index:5;
+      text-shadow:1px 1px 0 rgba(0,0,0,.3);
+    }
+    .map-area {
+      height:220px;
+      background:linear-gradient(135deg,rgba(255,107,0,.12),rgba(255,45,120,.1));
+      position:relative; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+      border-bottom:1px solid var(--gb);
+    }
+    .map-area iframe {
+      position:absolute; inset:0;
+      width:100%; height:100%; border:0;
+      filter:invert(.9) hue-rotate(180deg) saturate(.75); opacity:.8;
+    }
+    .map-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(transparent 60%,rgba(8,8,8,.9));
+      pointer-events:none; z-index:2;
+    }
+    .map-pin {
+      font-size:3.5rem; z-index:3; position:relative;
+      filter:drop-shadow(0 4px 12px rgba(255,107,0,.6));
+      animation:pinBounce 2s ease-in-out infinite;
+    }
+    @keyframes pinBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    .hotel-info { padding:1.8rem; text-align:left; }
+    .hotel-name {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:2.2rem; color:var(--y);
+      text-shadow:0 0 12px rgba(245,230,66,.4); line-height:1;
+    }
+    .hotel-sub { font-size:.75rem; color:rgba(255,255,255,.4); margin-top:.3rem; letter-spacing:.05em; }
+    .hotel-funny {
+      margin-top:1rem;
+      padding:.8rem 1rem;
+      border-left:3px solid var(--p);
+      background:rgba(255,45,120,.06);
+      border-radius:0 8px 8px 0;
+      font-size:.8rem; line-height:1.7; color:rgba(255,255,255,.6); font-style:italic;
+    }
+    .hotel-actions { display:flex; gap:.8rem; margin-top:1.2rem; flex-wrap:wrap; }
+    .hotel-btn {
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.6rem 1.4rem; border-radius:8px;
+      font-family:'Permanent Marker',cursive; font-size:.9rem;
+      text-decoration:none; transition:all .2s; border:none; cursor:pointer;
+    }
+    .hotel-btn.maps    { background:var(--g); color:#000; }
+    .hotel-btn.maps:hover    { box-shadow:0 8px 25px rgba(57,255,20,.45); transform:translateY(-3px); }
+    .hotel-btn.booking { background:var(--o); color:#000; }
+    .hotel-btn.booking:hover { box-shadow:0 8px 25px rgba(255,107,0,.45); transform:translateY(-3px); }
+
+    /* RULES */
+    #rules { text-align:center; }
+    .rules-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:1.2rem; max-width:900px; margin:0 auto;
+    }
+    .rule-card {
+      background:var(--glass); border:1px solid var(--gb);
+      border-radius:12px; padding:1.4rem;
+      text-align:left; transition:transform .3s, box-shadow .3s;
+    }
+    .rule-card:hover { transform:translateY(-6px); box-shadow:0 15px 40px rgba(255,45,120,.2); }
+    .rule-num { font-family:'Bebas Neue',sans-serif; font-size:3rem; color:var(--p); opacity:.25; line-height:1; }
+    .rule-text { font-family:'Permanent Marker',cursive; font-size:.95rem; color:rgba(255,255,255,.75); margin-top:.3rem; line-height:1.5; }
+
+    /* MUSIC */
+    #mplayer {
+      position:fixed; bottom:1.8rem; right:1.8rem;
+      z-index:500; display:flex; flex-direction:column; align-items:center; gap:.4rem;
+    }
+    #mbtn {
+      width:58px; height:58px; border-radius:50%;
+      background:var(--y); border:none; cursor:pointer;
+      font-size:1.6rem;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 20px rgba(245,230,66,.5);
+      animation:mpulse 2s ease-in-out infinite;
+      transition:transform .15s;
+    }
+    #mbtn:hover { transform:scale(1.12); }
+    @keyframes mpulse {
+      0%,100%{box-shadow:0 0 20px rgba(245,230,66,.5)}
+      50%{box-shadow:0 0 45px rgba(245,230,66,.9),0 0 80px rgba(245,230,66,.3)}
+    }
+    #mlbl { font-size:.6rem; letter-spacing:.12em; color:rgba(255,255,255,.4); text-transform:uppercase; }
+
+    /* FOOTER */
+    footer { padding:3rem 2rem; text-align:center; border-top:1px solid var(--gb); }
+    .foot-txt { font-family:'Permanent Marker',cursive; font-size:1.3rem; color:rgba(255,255,255,.2); }
+    .foot-sub { margin-top:.5rem; font-size:.65rem; color:rgba(255,255,255,.1); letter-spacing:.2em; }
+
+    /* FLOATERS */
+    .floater {
+      position:fixed; font-size:1.8rem;
+      pointer-events:none; z-index:998;
+      animation:floatUp linear forwards;
+    }
+    @keyframes floatUp {
+      0%  {transform:translateY(0) rotate(0deg) scale(1); opacity:1;}
+      100%{transform:translateY(-110vh) rotate(540deg) scale(0.5); opacity:0;}
+    }
+
+    /* GLITCH */
+    .glitch { position:relative; display:inline-block; }
+    .glitch::before,.glitch::after {
+      content:attr(data-t);
+      position:absolute; top:0; left:0; width:100%;
+    }
+    .glitch::before { color:var(--p); clip-path:polygon(0 0,100% 0,100% 42%,0 42%); animation:gl1 6s infinite linear; }
+    .glitch::after  { color:var(--g); clip-path:polygon(0 58%,100% 58%,100% 100%,0 100%); animation:gl2 6s infinite linear; }
+    @keyframes gl1 { 0%,87%,100%{transform:none;opacity:0} 88%{transform:translateX(-4px);opacity:.9} 90%{transform:translateX(4px);opacity:.9} 92%{opacity:0} }
+    @keyframes gl2 { 0%,87%,100%{transform:none;opacity:0} 89%{transform:translateX(4px);opacity:.9} 91%{transform:translateX(-4px);opacity:.9} 93%{opacity:0} }
+
+    @media(max-width:500px){
+      .clock-grid{gap:.5rem}
+      .colon{font-size:2rem}
+      .hotel-actions{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- ══ MUSIC ══ -->
+<div id="mplayer">
+  <span id="mlbl">TAP TO VIBE 🎵</span>
+  <button id="mbtn" onclick="toggleMusic()">🔇</button>
+  <!--
+  ════════════════════════════════════
+   ADD YOUR SONG:
+   1. Drop your .mp3 next to index.html
+   2. Change src="YOUR_SONG.mp3" below
+  ════════════════════════════════════
+  -->
+  <audio id="aud" loop>
+    <source src="mands1.mp3" type="audio/mpeg" />
+  </audio>
+</div>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    &nbsp;&nbsp;&nbsp; 🌊 মদের মণি, মন্দারমণি &nbsp;•&nbsp; RED CRABS > RED FLAGS &nbsp;•&nbsp; লিভার প্রস্তুত নয় &nbsp;•&nbsp; NO WIFI = NO PROBLEMS &nbsp;•&nbsp; 13KM BEACH = 13KM OF BAD DECISIONS &nbsp;•&nbsp; 🍺 DRIVE-IN BEACH, DRIVE-OUT LEGENDS &nbsp;•&nbsp; ঘুমানো মানা আছে &nbsp;•&nbsp; 🦀 THE CRABS HAVE BEEN WARNED &nbsp;•&nbsp; THIS IS NOT A DRILL &nbsp;•&nbsp;
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="scan"></div>
+  <div class="hero-content">
+    <div class="stamp">⚠️ CONFIRMED · NON-REFUNDABLE · NO ESCAPE ⚠️</div>
+    <h1 class="t1 bengali-title">মদের মণি,</h1>
+    <h1 class="t2 bengali-title2">মন্দারমণি</h1>
+    <p class="tagline">লিভার একটা formal complaint দিয়েছে 🍺</p>
+    <div class="hero-icons">
+      <span>🌊</span><span>🍺</span><span>🌴</span><span>🦀</span><span>🥃</span><span>🔥</span><span>🍹</span><span>🎉</span>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ scroll if sober enough ↓</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ COUNTDOWN ══ -->
+<section id="countdown">
+  <div class="section-header">
+    <p class="sec-label" style="color:var(--g);text-shadow:0 0 10px rgba(57,255,20,.8);">⏰ sobriety expires in...</p>
+    <h2 class="sec-title">FRIDAY · 20TH MARCH · 4:00 AM</h2>
+  </div>
+
+  <div class="clock-grid">
+    <div class="unit">
+      <div class="flip-box"><div class="flip-num" id="days">00</div></div>
+      <div class="unit-lbl">days</div>
+    </div>
+    <div class="colon">:</div>
+    <div class="unit">
+      <div class="flip-box"><div class="flip-num" id="hours">00</div></div>
+      <div class="unit-lbl">hours</div>
+    </div>
+    <div class="colon">:</div>
+    <div class="unit">
+      <div class="flip-box"><div class="flip-num" id="mins">00</div></div>
+      <div class="unit-lbl">mins</div>
+    </div>
+    <div class="colon">:</div>
+    <div class="unit">
+      <div class="flip-box"><div class="flip-num" id="secs">00</div></div>
+      <div class="unit-lbl">secs</div>
+    </div>
+  </div>
+
+  <div class="caption-box" id="cap">calculating required alcohol intake...</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ VIBES SECTION ══ -->
+<section id="gallery">
+  <div class="section-header">
+    <p class="sec-label" style="color:var(--o);text-shadow:0 0 10px rgba(255,107,0,.8);">🍺 the only confirmed item</p>
+    <h2 class="sec-title">BEER. DEFINITELY BEER.</h2>
+    <p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:.4rem;font-family:'Space Mono',monospace;">everything else is a surprise (mostly bad ones)</p>
+  </div>
+
+  <!-- BEER HERO -->
+  <div style="display:flex;justify-content:center;margin-bottom:3.5rem;">
+    <div class="beer-hero">
+      <img src="https://tenor.com/en-IN/view/beer-time-gif-11946345257823808929.gif" alt="beer" class="beer-img" />
+      <div class="beer-label">🍺 CONFIRMED</div>
+    </div>
+  </div>
+
+  <!-- GIF GRID -->
+  <div class="section-header" style="margin-bottom:1.5rem;">
+    <p class="sec-label" style="color:var(--p);text-shadow:0 0 10px rgba(255,45,120,.8);">😂 the vibe forecast</p>
+    <h2 class="sec-title">US THE ENTIRE TRIP</h2>
+  </div>
+
+  <div class="gif-grid">
+    <!--
+    TO SWAP ANY GIF:
+    Go to giphy.com, find a gif, right-click the gif -> Copy image address
+    Replace the src URL of any gif-card img below
+    -->
+    <div class="gif-card">
+      <img src="https://tenor.com/en-IN/view/picmix-frog-frogs-blingee-meme-gif-25200365.gif" alt="party" />
+      <div class="gif-cap">friday morning energy</div>
+    </div>
+    <div class="gif-card">
+      <img src="https://tenor.com/en-IN/view/sooryavansham-jahar-wali-kheer-heera-thakur-bloody-gif-17168281.gif" alt="drunk" />
+      <div class="gif-cap">friday night drunk</div>
+    </div>
+    <div class="gif-card">
+      <img src="https://tenor.com/en-IN/view/luisitocomunica-luisito-comunica-beach-party-gif-18689460.gif" alt="beach" />
+      <div class="gif-cap">hitting the beach</div>
+    </div>
+    <div class="gif-card">
+      <img src="https://tenor.com/en-IN/view/nidra-hangover-vijaymaster-vijay-saigaaadu-gif-20358738.gif" alt="chaos" />
+      <div class="gif-cap">Saturday morning chaos</div>
+    </div>
+    <div class="gif-card">
+      <img src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" alt="sleep" />
+      <div class="gif-cap">someone always does this</div>
+    </div>
+    <div class="gif-card">
+      <img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" alt="back home" />
+      <div class="gif-cap">us going back home</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ HOTEL ══ -->
+<section id="hotel">
+  <div class="section-header">
+    <p class="sec-label" style="color:var(--b);text-shadow:0 0 10px rgba(0,229,255,.8);">🏨 base camp</p>
+    <h2 class="sec-title">WHERE THE DAMAGE HAPPENS</h2>
+  </div>
+
+  <div class="hotel-wrap">
+    <div class="map-area">
+      <!--
+      ════════════════════════════════════════════════════════
+       PASTE YOUR GOOGLE MAPS IFRAME HERE:
+       1. Go to maps.google.com → search your hotel
+       2. Click Share → Embed a map → Copy HTML
+       3. Paste the <iframe ...></iframe> below
+       4. Delete the .map-pin span once your iframe is added
+      ════════════════════════════════════════════════════════
+      -->
+      <!-- YOUR IFRAME GOES HERE -->
+      <div class="map-cta">
+        <div class="map-big-pin">📍</div>
+        <div class="map-hotel-loc">Mandarmani, West Bengal</div>
+      </div>
+      <div class="map-overlay"></div>
+    </div>
+    <div class="hotel-info">
+      <!--
+      ════════════════════════════════════════════════════════
+       EDIT BELOW: hotel name, description, and links
+      ════════════════════════════════════════════════════════
+      -->
+      <div class="hotel-name">Sun City Resort Mandarmani</div>
+      <div class="hotel-sub">Mandarmani, East Midnapore · West Bengal</div>
+      <div class="hotel-funny">
+        "A sacred establishment where we shall check-in as functioning adults
+        and check-out as cautionary tales. Pool access confirmed.
+        Brain cells: entirely optional."
+      </div>
+      <div class="hotel-actions">
+        <!--
+        REPLACE THE href="#" BELOW WITH YOUR ACTUAL LINKS:
+          - First button: Google Maps link to your hotel
+          - Second button: Your booking confirmation URL (optional)
+        -->
+        <a href="https://maps.google.com/?q=Sun+City+Resort+Mandarmani" target="_blank" class="hotel-btn maps">
+          📍 FIND US ON MAPS
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ RULES ══ -->
+<section id="rules">
+  <div class="section-header">
+    <p class="sec-label" style="color:var(--y);text-shadow:0 0 10px rgba(245,230,66,.8);">📜 sacred scripture</p>
+    <h2 class="sec-title">THE RULES OF THE TRIP</h2>
+  </div>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-num">01</div>
+      <div class="rule-text">What happens in Mandarmani goes straight on the group chat.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">02</div>
+      <div class="rule-text">No talking about work. Violators have to drink alcohol. No exceptions.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">03</div>
+      <div class="rule-text">The sea will NOT be entered while sober. That's just disrespectful.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">04</div>
+      <div class="rule-text">Pool access is confirmed , sceptical about peeing.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">05</div>
+      <div class="rule-text">Sunscreen: mandatory. Dignity: absolutely optional.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">06</div>
+      <div class="rule-text">Anyone asleep before midnight on Night 1 has to Call "DHEU" at 5am.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p class="foot-txt">made with 🍺 zero planning &amp; maximum optimism</p>
+  <p class="foot-sub">mandarmani 2026 · your livers had a good run</p>
+</footer>
+
+<script>
+  // ── Cursor ──
+  const cur = document.getElementById('cur');
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  });
+  document.addEventListener('mousedown', () => cur.classList.add('on'));
+  document.addEventListener('mouseup',   () => cur.classList.remove('on'));
+
+  // ── Countdown to Friday 20 March 4AM IST ──
+  const TARGET = new Date('2026-03-20T04:00:00+05:30');
+  const captions = [
+    "calculating required alcohol intake...",
+    "packing bags. and anxiety.",
+    "telling boss it's a 'family emergency' 🤫",
+    "the beach is already expecting you.",
+    "red crabs preparing their welcome party 🦀",
+    "hotel pool: ready. liver: not so much.",
+    "13km of beach. zero excuses.",
+    "phone charging. plans: absolutely not.",
+    "GOA WHO? MANDARMANI SZNN. 🌊",
+    "hydrate now. regret later. still worth it.",
+    "everyone's quietly panicking. that's normal.",
+    "bags half packed. vibes fully locked.",
+  ];
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function flipIt(id, val){
+    const el = document.getElementById(id);
+    if(el.textContent !== val){
+      el.classList.remove('go');
+      void el.offsetWidth;
+      el.classList.add('go');
+      el.textContent = val;
+    }
+  }
+
+  let capIdx = 0;
+  function tick(){
+    const now  = new Date();
+    const diff = TARGET - now;
+    if(diff <= 0){
+      ['days','hours','mins','secs'].forEach(id => flipIt(id,'00'));
+      document.getElementById('cap').textContent = "🎉 IT'S TIME. LET'S GOOOOO!! 🌊🍺🦀";
+      launchParty(); return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000)  / 60000);
+    const s = Math.floor((diff % 60000)    / 1000);
+    flipIt('days',  pad(d));
+    flipIt('hours', pad(h));
+    flipIt('mins',  pad(m));
+    flipIt('secs',  pad(s));
+    if(s === 0){
+      capIdx = (capIdx+1) % captions.length;
+      document.getElementById('cap').textContent = captions[capIdx];
+    }
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  // ── Music ──
+  const aud  = document.getElementById('aud');
+  const mbtn = document.getElementById('mbtn');
+  const mlbl = document.getElementById('mlbl');
+  let playing = false;
+
+  document.addEventListener('click', function tryPlay(){
+    if(!playing){
+      aud.play().then(()=>{
+        playing = true;
+        mbtn.textContent = '🔊';
+        mlbl.textContent = "VIBIN' 🎵";
+        document.removeEventListener('click', tryPlay);
+      }).catch(()=>{});
+    }
+  }, { capture:true });
+
+  function toggleMusic(){
+    if(playing){
+      aud.pause(); playing = false;
+      mbtn.textContent = '🔇';
+      mlbl.textContent = 'TAP TO VIBE 🎵';
+    } else {
+      aud.play().then(()=>{
+        playing = true;
+        mbtn.textContent = '🔊';
+        mlbl.textContent = "VIBIN' 🎵";
+      }).catch(()=>{ mlbl.textContent = 'ADD SONG FIRST'; });
+    }
+  }
+
+  // ── Floating emoji confetti ──
+  const emjs = ['🍺','🥃','🎉','🌊','🦀','🥂','🍹','🔥','💃','🕺','🍾','🌴','✈️','🎊','🫡','🏖️'];
+  function spawnEmoji(){
+    const el = document.createElement('div');
+    el.className = 'floater';
+    el.textContent = emjs[Math.floor(Math.random() * emjs.length)];
+    el.style.left   = Math.random() * 92 + 'vw';
+    el.style.bottom = '-3rem';
+    const d = 4.5 + Math.random() * 5;
+    el.style.animationDuration = d + 's';
+    el.style.fontSize = (.7 + Math.random() * 1.4) + 'rem';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), d * 1000);
+  }
+  setInterval(spawnEmoji, 2800);
+  for(let i=0;i<3;i++) setTimeout(spawnEmoji, i*500);
+
+  function launchParty(){ for(let i=0;i<40;i++) setTimeout(spawnEmoji, i*80); }
+
+  // ── Subtle parallax hero tilt ──
+  document.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth  - .5) * 10;
+    const y = (e.clientY / window.innerHeight - .5) * 6;
+    const hc = document.querySelector('.hero-content');
+    if(hc) hc.style.transform = `perspective(800px) rotateY(${x*.25}deg) rotateX(${-y*.25}deg)`;
+  });
+</script>
+</body>
+</html>
