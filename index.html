@@ -473,6 +473,31 @@
       .colon{font-size:2rem}
       .hotel-actions{flex-direction:column}
     }
+
+    /* BOOZE SHOP */
+    #booze-map { text-align:center; }
+    .booze-card {
+      max-width:560px; margin:0 auto;
+      background:var(--glass);
+      border:1px solid var(--g);
+      border-radius:16px; padding:1.8rem;
+      box-shadow:0 0 30px rgba(57,255,20,.1);
+      transition:box-shadow .3s;
+    }
+    .booze-card:hover { box-shadow:0 0 50px rgba(57,255,20,.25); }
+    .booze-top { display:flex; align-items:center; gap:1.2rem; margin-bottom:1.4rem; text-align:left; }
+    .booze-icon { font-size:3.5rem; flex-shrink:0; animation:floatY 3s ease-in-out infinite; }
+    .booze-name { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--y); line-height:1; }
+    .booze-dist { font-size:.75rem; color:rgba(255,255,255,.5); margin-top:.4rem; font-family:'Space Mono',monospace; }
+    .booze-hours { font-size:.7rem; color:rgba(255,255,255,.35); margin-top:.25rem; font-family:'Space Mono',monospace; }
+    .booze-btn {
+      display:block; width:100%; text-align:center;
+      background:var(--g); color:#000;
+      font-family:'Permanent Marker',cursive; font-size:1.1rem;
+      padding:.7rem; border-radius:10px;
+      text-decoration:none; transition:all .2s;
+    }
+    .booze-btn:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(57,255,20,.5); }
   </style>
 </head>
 <body>
@@ -659,6 +684,38 @@
         </a>
       </div>
     </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ALCOHOL SHOP ══ -->
+<section id="booze-map">
+  <div class="section-header">
+    <p class="sec-label" style="color:var(--g);text-shadow:0 0 10px rgba(57,255,20,.8);">🍾 most important location</p>
+    <h2 class="sec-title">THE SUPPLY DEPOT</h2>
+    <p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:.4rem;font-family:'Space Mono',monospace;">memorise this. your life depends on it.</p>
+  </div>
+
+  <div class="booze-card">
+    <div class="booze-top">
+      <div class="booze-icon">🍺</div>
+      <div class="booze-info">
+        <!--
+        EDIT BELOW:
+        - booze-name: name of the alcohol shop
+        - booze-dist: distance/direction from hotel
+        - booze-hours: opening hours if you know them
+        -->
+        <div class="booze-name">MANDARMONI MANIRAJ F.L. OFF COUNTER</div>
+        <div class="booze-dist">📍 13 mins from Sun City Resort</div>
+        <div class="booze-hours">🕐 Open: 10AM – 10PM · verify locally, very important</div>
+      </div>
+    </div>
+    <!-- REPLACE href WITH GOOGLE MAPS SHARE LINK OF THE SHOP -->
+    <a href="https://maps.app.goo.gl/Lpre7W1ehivA5SSS8" target="_blank" class="booze-btn">
+      🗺️ TAKE ME TO THE BOOZE →
+    </a>
   </div>
 </section>
 
